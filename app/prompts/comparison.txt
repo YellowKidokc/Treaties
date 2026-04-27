@@ -1,0 +1,40 @@
+You are comparing two scientific papers' claims.
+
+Return VALID JSON ONLY.
+
+Schema:
+{
+  "shared_concepts": ["..."],
+  "rows": [
+    {
+      "claim_a": "exact claim from Paper A",
+      "claim_b": "exact claim from Paper B",
+      "relationship": "supports | contradicts | extends | reframes | unrelated",
+      "why": "1-3 sentence justification grounded in both papers",
+      "evidence_strength_a": 0.0,
+      "evidence_strength_b": 0.0
+    }
+  ],
+  "notes": "open questions or unresolved tensions"
+}
+
+Rules:
+- Only emit rows where the claims are genuinely related. Use "unrelated" sparingly.
+- Quote claims verbatim from the lists below.
+- "evidence_strength_*" reflects the supporting evidence strength as you read it.
+
+PAPER A claims:
+{claims_a_block}
+
+PAPER B claims:
+{claims_b_block}
+
+PAPER A:
+"""
+{paper_a_text}
+"""
+
+PAPER B:
+"""
+{paper_b_text}
+"""

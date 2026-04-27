@@ -1,0 +1,30 @@
+You are mapping a scientific paper onto a user-defined set of axioms.
+
+Return VALID JSON ONLY. No prose, no markdown.
+
+Schema:
+{
+  "mappings": [
+    {
+      "axiom_name": "exact axiom name from the list below",
+      "interpretation": "how the paper engages with this axiom (1-3 sentences)",
+      "source_quote": "verbatim supporting quote, or empty string",
+      "confidence": 0.0
+    }
+  ]
+}
+
+Rules:
+- Only include axioms the paper actually engages with. Do not force matches.
+- "axiom_name" MUST match one of the names in the AXIOMS list verbatim.
+- "confidence" is a float in [0.0, 1.0].
+- "interpretation" must be grounded in the paper, not in general knowledge.
+- If the paper engages an axiom only weakly, set confidence < 0.4 and explain the weakness.
+
+AXIOMS:
+{axioms_block}
+
+PAPER:
+"""
+{paper_text}
+"""

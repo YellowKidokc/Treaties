@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ paper.title or "Paper" }} — Treaties{% endblock %}
+{% block content %}
+<section class="panel">
+  <h2>{{ paper.title or "(untitled)" }}</h2>
+  <p class="muted">
+    {{ paper.authors or "" }}{% if paper.year %} · {{ paper.year }}{% endif %}
+    {% if paper.doi %} · DOI {{ paper.doi }}{% endif %}
+  </p>
+  {% if paper.abstract %}<blockquote>{{ paper.abstract }}</blockquote>{% endif %}
+</section>
+
+<section class="panel">
+  <h2>Run pipeline</h2>
+  <p class="muted">
+    Each button POSTs to its endpoint. Use <code>/papers/{{ paper.id }}/run-all</code> to do everything at once.
+  </p>
+  <form method="post" action="/papers/{{ paper.id }}/extract-model"><button>1. Extract paper model</button></form>
+  <form method="post" action="/papers/{{ paper.id }}/extract-evidence"><button>2. Extract evidence</button></form>
+  <form method="post" action="/papers/{{ paper.id }}/map-axioms"><button>3. Map axioms</button></form>
+  <form method="post" action="/papers/{{ paper.id }}/grade"><button>4. Grade</button></form>
+  <form method="post" action="/papers/{{ paper.id }}/build-graph"><button>5. Build graph</button></form>
+  <form method="post" action="/papers/{{ paper.id }}/snapshot"><button>6. Render snapshot</button></form>
+  <p style="margin-top: 12px;">
+    <a href="/papers/{{ paper.id }}/snapshot">View latest snapshot →</a>
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Source text (excerpt)</h2>
+  <pre style="white-space: pre-wrap; max-height: 400px; overflow:auto; background: var(--panel-2); padding: 12px; border-radius: 6px;">{{ paper.full_text[:4000] }}{% if paper.full_text|length > 4000 %}
+
+[... {{ paper.full_text|length - 4000 }} more chars ...]{% endif %}</pre>
+</section>
+{% endblock %}
