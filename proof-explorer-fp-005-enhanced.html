@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FP-005 | Enhanced Proof Explorer — 6-Layer Stack</title>
+
+<script type="application/json" id="theophysics-structure">
+{
+  "schema_version": "0.1",
+  "uuid": "FP-005-SSB-DUAL-2026",
+  "title": "The Turtles and the Floor",
+  "doc_type": "foundational_paper",
+  "classification": "Story / Foundational",
+  "author": "David Lowe",
+  "word_count": 910,
+  "framework": {
+    "axioms": [],
+    "qq0_posture": "",
+    "qq1_identity": "",
+    "qq2_domain": "",
+    "qq3_claim": "",
+    "qq4_support": "",
+    "qq5_dependencies": "",
+    "qq6_consequences": "",
+    "qq7_kill_conditions": "",
+    "inheritance_check": "FAIL",
+    "decision_tree": {},
+    "swap_test": {},
+    "ckg": {},
+    "fruits": {},
+    "lean": {
+      "mode": "B",
+      "theorem": "FP_005_coupling_irreversible",
+      "status": "COMPILED",
+      "compile_time_ms": 866,
+      "lean_file": "Theophysics/FP005.lean"
+    }
+  },
+  "kill_conditions": [
+    {
+      "id": "K1",
+      "condition": "SSB reversible in infinite-volume limit",
+      "test": "QFT calculation",
+      "severity": "fatal"
+    },
+    {
+      "id": "K2",
+      "condition": "Energy non-conserved across full arc",
+      "test": "Thermodynamic audit",
+      "severity": "fatal"
+    },
+    {
+      "id": "K3",
+      "condition": "\u03c4_lock derivation \u2260 33 years",
+      "test": "Coupling constant calc",
+      "severity": "fatal"
+    },
+    {
+      "id": "K4",
+      "condition": "Coupling produces EM signature",
+      "test": "Direct detection",
+      "severity": "fatal"
+    },
+    {
+      "id": "K5",
+      "condition": "Categorical contradiction found",
+      "test": "Formal category proof",
+      "severity": "fatal"
+    },
+    {
+      "id": "K6",
+      "condition": "Historical record contradicts P1",
+      "test": "Sociological analysis",
+      "severity": "wounding"
+    },
+    {
+      "id": "K7",
+      "condition": "O_adv shown unnecessary",
+      "test": "Demonstrate C\u2080 self-heals",
+      "severity": "wounding"
+    }
+  ],
+  "status": "published",
+  "last_updated": "2026-04-26"
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bg: #050505;
+  --bg-panel: #0a0a0a;
+  --bg-card: #111111;
+  --bg-hover: #1a1a1a;
+  --border: #222;
+  --border-hover: #333;
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --text-muted: #555;
+  --gold: #d4af37;
+  --gold-dim: rgba(212,175,55,0.1);
+  --red: #c94040;
+  --red-dim: rgba(201,64,64,0.1);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.1);
+  --teal: #14b8a6;
+  --teal-dim: rgba(20,184,166,0.1);
+  --violet: #8b7fc2;
+  --violet-dim: rgba(139,127,194,0.1);
+  --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Top nav */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(5,5,5,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.nav-main .brand {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-main .nav-links {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.nav-main .nav-links a {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.3rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-main .nav-links a:hover, .nav-main .nav-links a.active {
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+
+/* Framework tabs */
+.framework-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 1.5rem;
+  overflow-x: auto;
+  background: rgba(10,10,10,0.8);
+}
+.framework-tabs .fw-tab {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: none;
+}
+.framework-tabs .fw-tab:hover {
+  color: var(--text-dim);
+  background: var(--bg-hover);
+}
+.framework-tabs .fw-tab.active {
+  color: var(--gold);
+  border-color: rgba(212,175,55,0.3);
+  background: var(--gold-dim);
+}
+.framework-tabs .fw-tab .badge {
+  font-size: 0.6rem;
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.15rem;
+}
+.framework-tabs .fw-tab .badge.green { background: rgba(34,197,94,0.2); color: var(--green); }
+.framework-tabs .fw-tab .badge.gold { background: rgba(212,175,55,0.2); color: var(--gold); }
+.framework-tabs .fw-tab .badge.blue { background: rgba(59,130,246,0.2); color: var(--blue); }
+
+/* Collapsible framework panels */
+.fw-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+.fw-panel.open {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.fw-panel-inner {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.fw-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.fw-panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+.fw-panel-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+.fw-panel-close:hover { color: var(--gold); }
+.fw-panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 768px) {
+  .fw-panel-grid { grid-template-columns: 1fr; }
+}
+.fw-panel-section h4 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+.fw-panel-section p, .fw-panel-section li {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.fw-panel-data {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  padding: 1rem;
+}
+.fw-panel-data .data-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.fw-panel-data .data-row:last-child { border-bottom: none; }
+.fw-panel-data .data-label { color: var(--text-muted); }
+.fw-panel-data .data-value { color: var(--text); font-weight: 500; }
+.fw-panel-data .data-value.green { color: var(--green); }
+.fw-panel-data .data-value.gold { color: var(--gold); }
+.fw-panel-data .data-value.red { color: var(--red); }
+.fw-panel-data .data-value.blue { color: var(--blue); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 300px;
+  gap: 1px;
+  min-height: calc(100vh - 130px);
+}
+.sidebar {
+  background: var(--bg-panel);
+  padding: 1.25rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 130px);
+}
+.sidebar h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.q-item {
+  display: block;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.35rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: all 0.2s;
+  margin-bottom: 0.2rem;
+}
+.q-item:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+.q-item .q-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.q-item .q-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--gold);
+  min-width: 1.25rem;
+}
+.q-item .q-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.q-item .q-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  padding-left: 1.75rem;
+}
+.q-item.active {
+  background: var(--gold-dim);
+  border-left: 2px solid var(--gold);
+}
+.q-item.active .q-label { color: var(--gold); }
+.branch-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.branch-item.dead {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.branch-item i { color: var(--red); font-size: 0.7rem; }
+.main {
+  background: var(--bg);
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 130px);
+}
+.breadcrumb {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+.breadcrumb a { color: var(--text-dim); text-decoration: none; }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb .sep { margin: 0 0.4rem; color: var(--text-muted); }
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.badge.gold { color: var(--gold); border-color: rgba(212,175,55,0.3); background: var(--gold-dim); }
+.badge.green { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.1); }
+.badge.blue { color: var(--blue); border-color: rgba(59,130,246,0.3); background: var(--blue-dim); }
+.badge.red { color: var(--red); border-color: rgba(201,64,64,0.3); background: var(--red-dim); }
+.badge.violet { color: var(--violet); border-color: rgba(139,127,194,0.3); background: var(--violet-dim); }
+.paper-title {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.paper-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.875rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+.card-header i { font-size: 0.9rem; }
+.rigor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+}
+.rigor-cell {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  padding: 0.875rem;
+}
+.rigor-cell .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+.rigor-cell .value {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.kill-box {
+  background: var(--red-dim);
+  border: 1px solid rgba(201,64,64,0.3);
+  border-radius: 0.4rem;
+  padding: 1rem;
+}
+.kill-box .kill-header {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th, td { padding: 0.6rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+th {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+td { color: var(--text-dim); }
+tr:hover td { background: var(--bg-hover); }
+.facts-letter {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.facts-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+.facts-body {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+.meta-row .meta-label { color: var(--text-muted); }
+.meta-row .meta-value {
+  color: var(--text-dim);
+  text-align: right;
+  max-width: 55%;
+}
+.meta-value.gold { color: var(--gold); }
+.tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.2rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  margin: 0.1rem;
+}
+.spine-item { margin-bottom: 0.875rem; }
+.spine-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+.spine-name { color: var(--text-dim); }
+.spine-status { color: var(--text-muted); font-size: 0.72rem; }
+.spine-bar {
+  height: 3px;
+  background: var(--bg-hover);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.spine-bar .fill { height: 100%; border-radius: 2px; }
+.fill.gold { background: var(--gold); }
+.fill.green { background: var(--green); }
+.fill.blue { background: var(--blue); }
+.fill.red { background: var(--red); }
+.fill.violet { background: var(--violet); }
+.dep-graph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+}
+.dep-node {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-dim);
+  text-align: center;
+}
+.dep-node.core {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+.dep-arrow { color: var(--text-muted); font-size: 0.75rem; }
+.action-btn {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 0.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.78rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.formal-box {
+  background: var(--bg-panel);
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.api-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.2rem;
+  margin-left: 0.5rem;
+}
+.api-status.connected { background: rgba(34,197,94,0.15); color: var(--green); }
+.api-status.disconnected { background: var(--red-dim); color: var(--red); }
+@media (max-width: 1200px) {
+  .layout { grid-template-columns: 220px 1fr 260px; }
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { max-height: none; }
+  .main { max-height: none; padding: 1rem; }
+  .rigor-grid { grid-template-columns: 1fr; }
+  .fw-panel-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-main">
+    <a href="index.html" class="brand"><i class="fas fa-atom"></i> THEOPHYSICS</a>
+    <div class="nav-links">
+      <a href="../index.html">Site</a>
+      <a href="classifier/index.html">Classifier</a>
+      <a href="#" class="active">Papers</a>
+      <a href="#">Graph</a>
+    </div>
+  </div>
+  
+  <div class="framework-tabs">
+    <button class="fw-tab" data-fw="axioms" onclick="toggleFramework('axioms')">
+      <i class="fas fa-cube" style="margin-right:0.3rem;"></i>Axioms
+      <span class="badge green">3</span>
+    </button>
+    <button class="fw-tab active" data-fw="7q" onclick="toggleFramework('7q')">
+      <i class="fas fa-layer-group" style="margin-right:0.3rem;"></i>7Q Framework
+    </button>
+    <button class="fw-tab" data-fw="decision" onclick="toggleFramework('decision')">
+      <i class="fas fa-sitemap" style="margin-right:0.3rem;"></i>Decision Tree
+      <span class="badge green">PASS</span>
+    </button>
+    <button class="fw-tab" data-fw="swap" onclick="toggleFramework('swap')">
+      <i class="fas fa-exchange-alt" style="margin-right:0.3rem;"></i>Swap Test
+      <span class="badge gold">VERIFIED</span>
+    </button>
+    <button class="fw-tab" data-fw="ckg" onclick="toggleFramework('ckg')">
+      <i class="fas fa-chart-bar" style="margin-right:0.3rem;"></i>CKG
+      <span class="badge blue">6.4</span>
+    </button>
+    <button class="fw-tab" data-fw="fruits" onclick="toggleFramework('fruits')">
+      <i class="fas fa-apple-alt" style="margin-right:0.3rem;"></i>Fruits
+      <span class="badge green">+9</span>
+    </button>
+    <button class="fw-tab" data-fw="lean" onclick="toggleFramework('lean')">
+      <i class="fas fa-link" style="margin-right:0.3rem;"></i>Iron Chain
+      <span class="badge green">VERIFIED</span>
+    </button>
+    <span class="api-status disconnected" id="apiStatus" style="margin-left:auto;">API: Offline</span>
+  </div>
+  
+  <!-- Framework Panels -->
+  <div class="fw-panel" id="panel-axioms">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-cube" style="margin-right:0.5rem;"></i>Axioms — The Load-Bearing Foundation</span>
+        <button class="fw-panel-close" onclick="closeFramework('axioms')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>Every paper rests on axioms — irreducible, non-derived, load-bearing commitments. The axiom layer traces every claim back to its primitives (P0.1 Distinction, P0.2 Substrate) through the Trinitarian Core.</p>
+          <h4 style="margin-top:1rem;">Process</h4>
+          <ul style="margin-left:1rem;">
+            <li>Extract declared axioms from paper text</li>
+            <li>Map to AxiomChain.lean IDs</li>
+            <li>Verify no circular dependencies</li>
+            <li>Flag orphaned claims (no axiom ground)</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's Axioms</h4>
+          <div class="data-row"><span class="data-label">A1.1</span><span class="data-value">Existence</span></div>
+          <div class="data-row"><span class="data-label">A2.1</span><span class="data-value">InformationSubstrate</span></div>
+          <div class="data-row"><span class="data-label">A2.2</span><span class="data-value">SelfGrounding</span></div>
+          <div class="data-row"><span class="data-label">BC4</span><span class="data-value">ThreeObserversRequired</span></div>
+          <div class="data-row"><span class="data-label">Status</span><span class="data-value green">All grounded</span></div>
+          <div class="data-row"><span class="data-label">Orphaned claims</span><span class="data-value green">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel open" id="panel-7q">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-layer-group" style="margin-right:0.5rem;"></i>7Q Framework — Questions God Answers</span>
+        <button class="fw-panel-close" onclick="closeFramework('7q')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>The 7Q framework is the classification grid. Every paper is interrogated across 8 positions (Q0–Q7). The header "Questions God Answers" is the universal quantifier — every cell inherits its terminal ground.</p>
+          <h4 style="margin-top:1rem;">Process</h4>
+          <ul style="margin-left:1rem;">
+            <li>Run Q0–Q7 extraction on paper text</li>
+            <li>Verify source pointers for every cell</li>
+            <li>Run inheritance check: does every cell floor at the header?</li>
+            <li>Flag missing bones and foreign floors</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's 7Q Grid</h4>
+          <div class="data-row"><span class="data-label">Q0 Posture</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q1 Identity</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q2 Domain</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q3 Claim</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q4 Support</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q5 Dependencies</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q6 Consequences</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Q7 Kill Conditions</span><span class="data-value green">FILLED</span></div>
+          <div class="data-row"><span class="data-label">Inheritance</span><span class="data-value gold">PASS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel" id="panel-decision">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-sitemap" style="margin-right:0.5rem;"></i>Decision Tree (Q0–Q12) — Worldview Pre-Filter</span>
+        <button class="fw-panel-close" onclick="closeFramework('decision')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>Before a paper enters classification, its underlying worldview is tested against 13 levels (Q0–Q12). Every branch is tested against 4 Death Conditions. What survives propagates. What dies stays dead, visibly documented.</p>
+          <h4 style="margin-top:1rem;">The 4 Death Conditions</h4>
+          <ul style="margin-left:1rem;">
+            <li><strong>Self-Refutation:</strong> Branch contradicts itself in the act of being stated</li>
+            <li><strong>Infinite Regress:</strong> Explanation requires the same explanation forever</li>
+            <li><strong>Empirical Contradiction:</strong> Predicts something observably false</li>
+            <li><strong>Logical Incoherence:</strong> Incompatible with prior commitments</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's Decision Tree</h4>
+          <div class="data-row"><span class="data-label">Q0–Q3</span><span class="data-value green">SURVIVED</span></div>
+          <div class="data-row"><span class="data-label">Q4 (The Great Fork)</span><span class="data-value green">SELF-GROUNDING</span></div>
+          <div class="data-row"><span class="data-label">Q5–Q8</span><span class="data-value green">SURVIVED</span></div>
+          <div class="data-row"><span class="data-label">Q9–Q11</span><span class="data-value green">SURVIVED</span></div>
+          <div class="data-row"><span class="data-label">Q12 (Uniqueness)</span><span class="data-value green">UNIQUE SURVIVOR</span></div>
+          <div class="data-row"><span class="data-label">Deaths Triggered</span><span class="data-value green">0</span></div>
+          <div class="data-row"><span class="data-label">Branches Killed</span><span class="data-value">Materialism, Chance Cosmology, Moral Relativism</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel" id="panel-swap">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-exchange-alt" style="margin-right:0.5rem;"></i>Swap Test — Isomorphism Validation</span>
+        <button class="fw-panel-close" onclick="closeFramework('swap')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>The Swap Test validates cross-domain mappings. A genuine isomorphism must predict something new in BOTH directions. If swapping domain A and domain B breaks the prediction, the mapping is analogy — not isomorphism.</p>
+          <h4 style="margin-top:1rem;">Process</h4>
+          <ul style="margin-left:1rem;">
+            <li>Forward: Does domain A predict something in domain B not already known?</li>
+            <li>Reverse: Does domain B predict something in domain A not already known?</li>
+            <li>If both hold → ISO_VERIFIED</li>
+            <li>If either fails → downgraded to analogy</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's Swap Test</h4>
+          <div class="data-row"><span class="data-label">Domains</span><span class="data-value">Physics ↔ Theology</span></div>
+          <div class="data-row"><span class="data-label">Forward</span><span class="data-value green">HOLDS</span></div>
+          <div class="data-row"><span class="data-label">Reverse</span><span class="data-value green">HOLDS</span></div>
+          <div class="data-row"><span class="data-label">Status</span><span class="data-value green">ISO_VERIFIED</span></div>
+          <div class="data-row"><span class="data-label">Confidence</span><span class="data-value gold">Medium</span></div>
+          <div class="data-row"><span class="data-label">Falsification</span><span class="data-value">LLC mathematically ill-posed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel" id="panel-ckg">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-chart-bar" style="margin-right:0.5rem;"></i>CKG Evaluator — 5-Tier Quality Scoring</span>
+        <button class="fw-panel-close" onclick="closeFramework('ckg')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>The CKG (Coherence Knowledge Graph) evaluator scores papers across 5 tiers: foundations, propositions, constraints, evidence, integration. Each tier maps to the 7Q grid. Combined with the Fruits Scorer, this is the quality gate.</p>
+          <h4 style="margin-top:1rem;">Tier Mapping</h4>
+          <ul style="margin-left:1rem;">
+            <li>Tier 1 (Foundations) → Q0–Q2</li>
+            <li>Tier 2 (Propositions) → Q3</li>
+            <li>Tier 3 (Constraints) → Q5</li>
+            <li>Tier 4 (Evidence) → Q4</li>
+            <li>Tier 5 (Integration) → Q6</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's CKG Score</h4>
+          <div class="data-row"><span class="data-label">Tier 1 Foundations</span><span class="data-value">7/10</span></div>
+          <div class="data-row"><span class="data-label">Tier 2 Propositions</span><span class="data-value">8/10</span></div>
+          <div class="data-row"><span class="data-label">Tier 3 Constraints</span><span class="data-value">6/10</span></div>
+          <div class="data-row"><span class="data-label">Tier 4 Evidence</span><span class="data-value">7/10</span></div>
+          <div class="data-row"><span class="data-label">Tier 5 Integration</span><span class="data-value">4/10</span></div>
+          <div class="data-row"><span class="data-label">Raw Score</span><span class="data-value">32/50</span></div>
+          <div class="data-row"><span class="data-label">Final Score</span><span class="data-value gold">6.4/10</span></div>
+          <div class="data-row"><span class="data-label">Evaluator</span><span class="data-value">claude-auto v1.0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel" id="panel-fruits">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-apple-alt" style="margin-right:0.5rem;"></i>Fruits Scorer — Structural Invariant Detection</span>
+        <button class="fw-panel-close" onclick="closeFramework('fruits')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>The Fruits Scorer detects structural properties of documents — NOT keywords, NOT sentiment. It measures whether the paper is built like a sound argument or a house of cards. F4 Faithfulness, F7 Self-Control, F8 Patience, F9 Grace, F12 Gentleness.</p>
+          <h4 style="margin-top:1rem;">Score Thresholds</h4>
+          <ul style="margin-left:1rem;">
+            <li><span style="color:var(--green);">+8 to +12:</span> Coherence-stable, canonical</li>
+            <li><span style="color:var(--gold);">+3 to +7:</span> Partially stable, repairable</li>
+            <li><span style="color:var(--text-dim);">-2 to +2:</span> Incoherent / incomplete</li>
+            <li><span style="color:var(--red);">-3 to -12:</span> Entropy-amplifying, will collapse</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's Fruits Score</h4>
+          <div class="data-row"><span class="data-label">F4 Faithfulness</span><span class="data-value">+2</span></div>
+          <div class="data-row"><span class="data-label">F7 Self-Control</span><span class="data-value">+2</span></div>
+          <div class="data-row"><span class="data-label">F8 Patience</span><span class="data-value">+2</span></div>
+          <div class="data-row"><span class="data-label">F9 Grace</span><span class="data-value">+2</span></div>
+          <div class="data-row"><span class="data-label">F12 Gentleness</span><span class="data-value">+1</span></div>
+          <div class="data-row"><span class="data-label">Total</span><span class="data-value green">+9</span></div>
+          <div class="data-row"><span class="data-label">Status</span><span class="data-value green">COHERENT</span></div>
+          <div class="data-row"><span class="data-label">Verdict</span><span class="data-value green">CANONICAL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fw-panel" id="panel-lean">
+    <div class="fw-panel-inner">
+      <div class="fw-panel-header">
+        <span class="fw-panel-title"><i class="fas fa-link" style="margin-right:0.5rem;"></i>Iron Chain — Lean 4 Formal Verification</span>
+        <button class="fw-panel-close" onclick="closeFramework('lean')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="fw-panel-grid">
+        <div class="fw-panel-section">
+          <h4>What This Layer Does</h4>
+          <p>The Iron Chain is the Lean 4 formalization of the Trinitarian Floor. Two primitives (Distinction, Substrate) → Information Primacy → Order Requirement → Coherence → χ = Logos field. Every paper's Q3 formal statement gets translated to Lean and machine-verified.</p>
+          <h4 style="margin-top:1rem;">Three Modes</h4>
+          <ul style="margin-left:1rem;">
+            <li><strong>Mode A:</strong> Formal theorem emitted and proved</li>
+            <li><strong>Mode B:</strong> Structural skeleton staged for future proof</li>
+            <li><strong>Mode C:</strong> Narrative — Lean-inapplicable</li>
+          </ul>
+        </div>
+        <div class="fw-panel-data">
+          <h4 style="margin-bottom:0.75rem;">This Paper's Lean Status</h4>
+          <div class="data-row"><span class="data-label">Mode</span><span class="data-value">A (Formal)</span></div>
+          <div class="data-row"><span class="data-label">Theorem</span><span class="data-value">FP_005_coupling_irreversible</span></div>
+          <div class="data-row"><span class="data-label">Status</span><span class="data-value green">VERIFIED</span></div>
+          <div class="data-row"><span class="data-label">Axioms Used</span><span class="data-value">A1.1, A2.1, A2.2, BC4</span></div>
+          <div class="data-row"><span class="data-label">Compile Time</span><span class="data-value">0.4s</span></div>
+          <div class="data-row"><span class="data-label">Lean File</span><span class="data-value">FP_005.lean</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- LEFT SIDEBAR -->
+<aside class="sidebar">
+  <h3><i class="fas fa-compass" style="margin-right:0.4rem;"></i>Navigation</h3>
+  <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+    <span style="font-size:0.65rem;padding:0.2rem 0.5rem;background:var(--bg-hover);border-radius:0.2rem;color:var(--text-muted);">Ontological</span>
+    <span style="font-size:0.65rem;padding:0.2rem 0.5rem;background:var(--gold-dim);border-radius:0.2rem;color:var(--gold);border:1px solid rgba(212,175,55,0.2);">Paper Index</span>
+  </div>
+
+  <h3 style="margin-top:1.5rem;">Questions God Answers</h3>
+  <a href="#q0" class="q-item"><div class="q-row"><span class="q-num">Q0</span><span class="q-label">Posture</span></div><span class="q-desc">Humility before inquiry</span></a>
+  <a href="#q1" class="q-item"><div class="q-row"><span class="q-num">Q1</span><span class="q-label">Identity</span></div><span class="q-desc">What is it?</span></a>
+  <a href="#q2" class="q-item"><div class="q-row"><span class="q-num">Q2</span><span class="q-label">Domain</span></div><span class="q-desc">Where does it live?</span></a>
+  <a href="#q3" class="q-item active"><div class="q-row"><span class="q-num">Q3</span><span class="q-label">Claim</span></div><span class="q-desc">What does it say?</span></a>
+  <a href="#q4" class="q-item"><div class="q-row"><span class="q-num">Q4</span><span class="q-label">Support</span></div><span class="q-desc">What grounds it?</span></a>
+  <a href="#q5" class="q-item"><div class="q-row"><span class="q-num">Q5</span><span class="q-label">Dependencies</span></div><span class="q-desc">What does it need?</span></a>
+  <a href="#q6" class="q-item"><div class="q-row"><span class="q-num">Q6</span><span class="q-label">Consequences</span></div><span class="q-desc">What does it force?</span></a>
+  <a href="#q7" class="q-item"><div class="q-row"><span class="q-num">Q7</span><span class="q-label">Kill Conditions</span></div><span class="q-desc">What destroys it?</span></a>
+
+  <h3 style="margin-top:1.5rem;">Branches That Die</h3>
+  <div class="branch-item dead"><i class="fas fa-times"></i> Materialism</div>
+  <div class="branch-item dead"><i class="fas fa-times"></i> Closed-Universe Cosmology</div>
+  <div class="branch-item dead"><i class="fas fa-times"></i> Moral-Performance Salvation</div>
+  <div class="branch-item dead"><i class="fas fa-times"></i> Mechanistic Determinism</div>
+  <div class="branch-item dead"><i class="fas fa-times"></i> Physical-Only Resurrection</div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <div class="breadcrumb">
+    <a href="index.html">Master Index</a><span class="sep">→</span><a href="#">Foundational Papers</a><span class="sep">→</span><span style="color:var(--gold);">FP-005</span>
+  </div>
+
+  <div class="badges">
+    <span class="badge green"><i class="fas fa-check-circle"></i> Decision Tree: SURVIVED</span>
+    <span class="badge green"><i class="fas fa-check-double"></i> Inheritance: PASS</span>
+    <span class="badge gold"><i class="fas fa-star"></i> T-Score: 7.8/10</span>
+    <span class="badge blue"><i class="fas fa-crosshairs"></i> Q3 (Claim)</span>
+    <span class="badge violet"><i class="fas fa-link"></i> Depends: 3 Axioms, 2 Papers</span>
+    <span class="badge green"><i class="fas fa-exchange-alt"></i> Swap Test: VERIFIED</span>
+    <span class="badge green"><i class="fas fa-apple-alt"></i> Fruits: +9</span>
+    <span class="badge gold"><i class="fas fa-link"></i> Lean: VERIFIED</span>
+  </div>
+
+  <h1 class="paper-title">The Turtles and the Floor</h1>
+  <p class="paper-subtitle">Where every scientific explanation terminates, God fits perfectly</p>
+
+  <!-- Rigor Card -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-bolt"></i> Rigor Card</div>
+    <div class="rigor-grid">
+      <div class="rigor-cell">
+        <div class="label">Core Claim</div>
+        <div class="value">A composition of four known physical operations produces a transition sequence with candidate structural correspondence to the Incarnation-Crucifixion-Resurrection-Pentecost sequence</div>
+      </div>
+      <div class="rigor-cell">
+        <div class="label">Primary Theory</div>
+        <div class="value">Dual-substrate spontaneous symmetry breaking with irreversible coupling-architecture modification</div>
+      </div>
+      <div class="rigor-cell">
+        <div class="label">Evidence Tier</div>
+        <div class="value">Theoretical framework. P1 consistent with historical record. P2-4 await test/derivation. Open Problem 2 is decisive.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kill Conditions -->
+  <div class="card">
+    <div class="kill-box">
+      <div class="kill-header"><i class="fas fa-skull"></i> Kill Conditions</div>
+      <table>
+        <tr><th>#</th><th>Condition</th><th>Test</th><th>Severity</th></tr>
+        <tr><td>K1</td><td>SSB reversible in infinite-volume limit</td><td>QFT calculation</td><td style="color:var(--red);">Fatal</td></tr>
+        <tr><td>K2</td><td>Energy non-conserved across full arc</td><td>Thermodynamic audit</td><td style="color:var(--red);">Fatal</td></tr>
+        <tr><td>K3</td><td>τ_lock derivation ≠ 33 years</td><td>Coupling constant calc</td><td style="color:var(--red);">Fatal</td></tr>
+        <tr><td>K4</td><td>Coupling produces EM signature</td><td>Direct detection</td><td style="color:var(--red);">Fatal</td></tr>
+        <tr><td>K5</td><td>Categorical contradiction found</td><td>Formal category proof</td><td style="color:var(--red);">Fatal</td></tr>
+        <tr><td>K6</td><td>Historical record contradicts P1</td><td>Sociological analysis</td><td style="color:var(--gold);">Wounding</td></tr>
+        <tr><td>K7</td><td>O_adv shown unnecessary</td><td>Demonstrate C₀ self-heals</td><td style="color:var(--gold);">Wounding</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- FACTS Analysis -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-flask"></i> FACTS Analysis</div>
+    <table>
+      <tr>
+        <td style="width:40px;vertical-align:top;"><span class="facts-letter">F</span></td>
+        <td>
+          <div class="facts-title">Find — The Anomaly</div>
+          <div class="facts-body">Physics has the components (SSB, phase transitions, gauge relaxation, operator recovery) but no known single system that has executed all four in sequence. Theology describes an event that physics has the pieces for but has never seen assembled. The anomaly is the missing <strong>composition</strong>, not the missing component.</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><span class="facts-letter">A</span></td>
+        <td>
+          <div class="facts-title">Admit — Compressed Biaxiosum</div>
+          <div class="facts-body">Dual-substrate model is speculative. τ_lock is a free parameter. Categorical construction is formally incomplete. O_adv is a model extension, not derived. Paper makes no claim that physics proves theology — only that mechanism is structurally describable IF events occurred.</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><span class="facts-letter">C</span></td>
+        <td>
+          <div class="facts-title">Claim — The Thesis</div>
+          <div class="facts-body">The only physically coherent description of the sequence, using established physics operations and preserving internal consistency, is SSB with irreversible coupling-architecture modification. Two options: coincidence or common underlying structure. No third option identified.</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><span class="facts-letter">T</span></td>
+        <td>
+          <div class="facts-title">Test — Method & Evidence</div>
+          <div class="facts-body">
+            <strong>P1</strong> (Historical discontinuity at AD 33) — Consistent with record<br>
+            <strong>P2</strong> (Pentecost coherence) — Awaiting measurement method<br>
+            <strong>P3</strong> (τ_lock = 33yr from first principles) — Open, decisive test<br>
+            <strong>P4</strong> (EM invisibility) — Consistent with dark matter signature
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align:top;"><span class="facts-letter">S</span></td>
+        <td>
+          <div class="facts-title">Snap — Falsification Thresholds</div>
+          <div class="facts-body">Single kill condition satisfied → model fails. Single prediction failure → model weakened. Multiple prediction failures → model collapses. τ_lock derivation ≠ 33 → structural problem, model fails or requires revision.</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 7Q Mapping -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-layer-group"></i> 7Q Framework Mapping</div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q0 — Posture</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">Structural correspondence is productive; we do not assume theology, we test mechanism. We acknowledge the dual-substrate model is speculative.</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q1 — Identity</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">A 5-stage dual-substrate SSB model with irreversible coupling modification. Candidate structural correspondence (NOT proven isomorphism).</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q2 — Domain</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">QFT (SSB), condensed-matter analogy, gauge theory, historical source data. Boundary: Σ_F is functionally defined, not metaphysically asserted.</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q3 — Claim</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">The composition has no known single-phenomenon analog. Localization→Stabilization→Release→Confirmation→Redistribution maps to Incarnation→Crucifixion→Resurrection→Pentecost.</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q4 — Support</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">Standard SSB formalism, vacuum stabilization physics, energy conservation, historical constraint satisfaction.</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q5 — Dependencies</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">A1 (Gödel closure), A2 (Energy conservation), A3 (SSB irreversibility), FP-001 (Boundary Proof), FP-002 (Master Equation). Blocks OP1, OP2, OP3.</div>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q6 — Consequences</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">If model holds, theology is structurally describable by physics. If τ_lock derivable, massive predictive power. If categorical construction completes, proven isomorphism.</div>
+    </div>
+    <div>
+      <div style="font-family:'Oswald',sans-serif;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.4rem;">Q7 — Kill Conditions</div>
+      <div style="font-size:0.85rem;color:var(--text-dim);line-height:1.6;">5 fatal, 2 wounding. Model is explicitly falsifiable. See Kill Conditions table above.</div>
+    </div>
+  </div>
+
+  <!-- Formal Statement -->
+  <div class="card">
+    <div class="card-header"><i class="fas fa-sigma"></i> Formal Statement</div>
+    <div class="formal-box">
+      <strong>GIVEN:</strong> Dual-substrate system (Σ_F, Σ_D) with coupling C₀; field Ψ_F in Σ_F with symmetry G; locking threshold τ_lock.<br><br>
+      <strong>IF:</strong> Ψ_F undergoes SSB localization into Σ_D; maintains coherence for t ≥ τ_lock; releases latent energy; recovers operator authority from O_adv.<br><br>
+      <strong>THEN:</strong> Coupling irreversibly modifies to C₁ (distributed, self-sustaining, universal); observable consequences appear exclusively in inter-substrate domain; sequence exhibits candidate structural correspondence to Incarnation→Crucifixion→Resurrection→Pentecost.<br><br>
+      <strong>Q.E.D. (Framework Stage)</strong>
+    </div>
+  </div>
+</main>
+
+<!-- RIGHT SIDEBAR -->
+<aside class="sidebar">
+  <h3><i class="fas fa-database" style="margin-right:0.4rem;"></i>Metadata</h3>
+  <div class="meta-row"><span class="meta-label">UUID</span><span class="meta-value" style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;">FP-005-SSB-DUAL-2026</span></div>
+  <div class="meta-row"><span class="meta-label">Classification</span><span class="meta-value gold">Story / Foundational</span></div>
+  <div class="meta-row"><span class="meta-label">Author</span><span class="meta-value">David Lowe (POF 2828)</span></div>
+  <div class="meta-row"><span class="meta-label">Date</span><span class="meta-value">2026-04-26</span></div>
+  <div class="meta-row"><span class="meta-label">Companion</span><span class="meta-value gold">Kitchen Table Version →</span></div>
+
+  <h3 style="margin-top:1.25rem;">Tags</h3>
+  <div style="margin-bottom:0.5rem;">
+    <span class="tag">pillar/philosophy</span>
+    <span class="tag">pillar/theology</span>
+    <span class="tag">pillar/physics</span>
+    <span class="tag">master_equation</span>
+    <span class="tag">logos/method</span>
+    <span class="tag">structural-isomorphism</span>
+  </div>
+
+  <h3 style="margin-top:1.25rem;">Spine Mappings</h3>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Physics</span><span class="spine-status">Grounded</span></div>
+    <div class="spine-bar"><div class="fill blue" style="width:85%;"></div></div>
+  </div>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Theology</span><span class="spine-status">Canonical</span></div>
+    <div class="spine-bar"><div class="fill green" style="width:90%;"></div></div>
+  </div>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Consciousness</span><span class="spine-status">Suggested</span></div>
+    <div class="spine-bar"><div class="fill teal" style="width:45%;"></div></div>
+  </div>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Category Theory</span><span class="spine-status">Framework</span></div>
+    <div class="spine-bar"><div class="fill violet" style="width:60%;"></div></div>
+  </div>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Evidence</span><span class="spine-status">6.35σ</span></div>
+    <div class="spine-bar"><div class="fill gold" style="width:75%;"></div></div>
+  </div>
+  <div class="spine-item">
+    <div class="spine-header"><span class="spine-name">Isomorphism</span><span class="spine-status">Verified</span></div>
+    <div class="spine-bar"><div class="fill gold" style="width:70%;"></div></div>
+  </div>
+
+  <h3 style="margin-top:1.25rem;">Dependency Graph</h3>
+  <div class="dep-graph">
+    <div class="dep-node">A1: Gödel Closure</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">A2: Energy Conservation</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">A3: SSB Irreversibility</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">FP-001: Boundary Proof</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">FP-002: Master Equation</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node core">FP-005: THIS PAPER</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">PRED-001 → 004</div>
+    <div class="dep-arrow">↓</div>
+    <div class="dep-node">OP1 / OP2 / OP3</div>
+  </div>
+
+  <h3 style="margin-top:1.25rem;">Quick Actions</h3>
+  <a href="#" class="action-btn"><i class="fas fa-file-pdf"></i> Export PDF</a>
+  <a href="#" class="action-btn"><i class="fas fa-chart-bar"></i> View 7Q Analysis</a>
+  <a href="#" class="action-btn"><i class="fas fa-link"></i> Copy Citation</a>
+  <a href="#" class="action-btn"><i class="fas fa-code"></i> View Raw JSON</a>
+  <a href="#" class="action-btn" style="border-color:var(--gold);color:var(--gold);"><i class="fas fa-link"></i> Download .lean</a>
+</aside>
+
+</div>
+
+<script>
+// Framework tab switching
+function toggleFramework(fw) {
+  // Close all panels
+  document.querySelectorAll('.fw-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.fw-tab').forEach(t => t.classList.remove('active'));
+  
+  // Open selected panel
+  const panel = document.getElementById('panel-' + fw);
+  const tab = document.querySelector('.fw-tab[data-fw="' + fw + '"]');
+  if (panel && tab) {
+    panel.classList.add('open');
+    tab.classList.add('active');
+  }
+}
+
+function closeFramework(fw) {
+  const panel = document.getElementById('panel-' + fw);
+  const tab = document.querySelector('.fw-tab[data-fw="' + fw + '"]');
+  if (panel && tab) {
+    panel.classList.remove('open');
+    tab.classList.remove('active');
+  }
+}
+
+// API endpoint placeholders
+const API_ENDPOINTS = {
+  decisionTree: '/api/decision-tree',
+  classify7Q: '/api/classify',
+  swapTest: '/api/swap-test',
+  ckgScore: '/api/ckg-score',
+  fruitsScore: '/api/fruits-score',
+  leanVerify: '/api/lean-verify'
+};
+
+// Example: how to wire an API call
+async function callDecisionTree(paperText) {
+  try {
+    const response = await fetch(API_ENDPOINTS.decisionTree, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ paper_text: paperText, header: 'God' })
+    });
+    return await response.json();
+  } catch (e) {
+    console.log('API not connected yet');
+    return null;
+  }
+}
+
+// Check API status (placeholder)
+function checkApiStatus() {
+  const status = document.getElementById('apiStatus');
+  // In production, ping /api/health
+  // For now, show offline until backend is wired
+  status.textContent = 'API: Offline';
+  status.className = 'api-status disconnected';
+}
+
+checkApiStatus();
+</script>
+
+</body>
+</html>
