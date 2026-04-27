@@ -1,0 +1,29 @@
+You are extracting structured scientific knowledge from a paper.
+
+Return VALID JSON ONLY. No prose, no markdown, no commentary.
+
+Schema:
+{
+  "items": [
+    {
+      "category": "problem | method | variables | mechanism | evidence | limitations | implications",
+      "claim": "single clear sentence stating the item",
+      "source_quote": "verbatim quote from the paper that supports this claim, or empty string if none",
+      "confidence": 0.0,
+      "uncertainty_note": "brief note about ambiguity, gaps, or hedges"
+    }
+  ]
+}
+
+Rules:
+- Use ONLY the seven category values listed above. Reject any other category.
+- Each "claim" is one sentence, no compound clauses.
+- "source_quote" must be verbatim from the paper. If no clean quote exists, use "".
+- "confidence" is a float in [0.0, 1.0]. 1.0 means stated explicitly and unambiguously.
+- Do NOT invent content. If a category is absent in the paper, omit items for it.
+- Output multiple items per category if the paper supports them.
+
+PAPER:
+"""
+{paper_text}
+"""

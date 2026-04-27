@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Treaties — Home{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+  <section class="panel">
+    <h2>Import a paper</h2>
+    <form method="post" action="/papers/upload" enctype="multipart/form-data">
+      <p><label>File <input type="file" name="file" required></label></p>
+      <p><label>Title <input type="text" name="title"></label></p>
+      <p><label>Authors <input type="text" name="authors"></label></p>
+      <p><label>Year <input type="number" name="year"></label></p>
+      <p><input type="submit" value="Upload"></p>
+    </form>
+    <p class="muted">Supports .txt, .md, .pdf. PDF parsing requires <code>pypdf</code>.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Axioms</h2>
+    {% if axioms %}
+      <ul>
+        {% for a in axioms %}
+          <li><strong>{{ a.name }}</strong>{% if a.category %} <span class="pill">{{ a.category }}</span>{% endif %}
+            {% if a.description %}<div class="muted">{{ a.description }}</div>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No axioms yet. Run <code>python scripts/seed_axioms.py</code> or POST <code>/axioms</code>.</p>
+    {% endif %}
+  </section>
+</div>
+
+<section class="panel">
+  <h2>Papers</h2>
+  {% if papers %}
+    <table>
+      <tr>
+        <th>ID</th><th>Title</th><th>Authors</th><th>Year</th><th>Actions</th>
+      </tr>
+      {% for p in papers %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td><a href="/papers/{{ p.id }}/view">{{ p.title or "(untitled)" }}</a></td>
+          <td>{{ p.authors or "" }}</td>
+          <td>{{ p.year or "" }}</td>
+          <td>
+            <a href="/papers/{{ p.id }}/snapshot">snapshot</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p class="muted">No papers imported yet.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h2>Recent comparisons</h2>
+  {% if comparisons %}
+    <ul>
+      {% for c in comparisons %}
+        <li>#{{ c.id }} — papers {{ c.paper_a_id }} vs {{ c.paper_b_id }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">None yet. POST <code>/compare</code> with two paper ids.</p>
+  {% endif %}
+</section>
+{% endblock %}

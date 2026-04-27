@@ -1,0 +1,30 @@
+You are extracting evidence items that back specific claims in a paper.
+
+Return VALID JSON ONLY.
+
+Schema:
+{
+  "items": [
+    {
+      "claim": "the claim text this evidence supports (verbatim from the claims list below)",
+      "evidence_type": "experiment | observation | citation | statistical_result | theoretical_argument",
+      "evidence_text": "what the evidence is, in one sentence",
+      "source_quote": "verbatim quote from the paper",
+      "strength_score": 0.0,
+      "weakness_note": "what limits this evidence"
+    }
+  ]
+}
+
+Rules:
+- "claim" MUST exactly match one of the claims listed below. If no claim fits, skip the evidence.
+- "strength_score" is a float in [0.0, 1.0]. Direct experimental evidence with controls scores high; bare assertion or external citation scores low.
+- Do not invent quotes.
+
+CLAIMS:
+{claims_block}
+
+PAPER:
+"""
+{paper_text}
+"""

@@ -1,0 +1,31 @@
+You are extracting boolean SIGNALS that will be used to compute a paper's quality score.
+
+You DO NOT score the paper. Python computes the score from your signals.
+
+Return VALID JSON ONLY. No prose, no markdown.
+
+Schema:
+{
+  "sample_size_mentioned": true,
+  "variables_defined": true,
+  "method_clear": true,
+  "controls_present": true,
+  "limitations_discussed": true,
+  "data_available": true,
+  "reproducible_steps": true,
+  "funding_or_conflicts_mentioned": true,
+  "statistical_results_present": true,
+  "direct_evidence_present": true,
+  "notes": "brief justification for any borderline signals"
+}
+
+Rules:
+- Each field is strictly true or false.
+- "true" means the paper explicitly demonstrates the property, not that it could plausibly have it.
+- "data_available" is true ONLY if the paper points to a dataset, repository, or supplementary materials.
+- "direct_evidence_present" is true if the paper reports its own observations/experiments rather than only citing others.
+
+PAPER:
+"""
+{paper_text}
+"""

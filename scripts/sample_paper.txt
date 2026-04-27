@@ -1,0 +1,44 @@
+A Minimal Sample Paper for Treaties Smoke Tests
+
+Authors: A. Researcher, B. Collaborator
+Year: 2024
+
+Abstract
+We investigate whether moderate sleep restriction (5 hours/night for 7 days) impairs working memory
+in healthy adults. In a within-subjects design with 32 participants, we found a 14% drop in n-back
+accuracy (p = 0.003) and a corresponding rise in reaction-time variability. Effects partially recovered
+after a single 9-hour recovery night.
+
+1. Problem
+Sleep loss is widely believed to impair cognition, but quantifying the effect on working memory in
+naturalistic mild-restriction conditions remains contested.
+
+2. Method
+Within-subjects crossover. Each participant served as their own control. Working memory was measured
+with a 2-back letter task. Sleep was monitored with wrist actigraphy and self-report diaries. The
+study was preregistered at OSF.
+
+3. Variables
+Independent variable: nightly sleep duration (5h vs 8h target).
+Dependent variables: n-back accuracy (%), n-back reaction time (ms), reaction-time variability (CV).
+
+4. Mechanism
+We hypothesize that sleep restriction degrades prefrontal-cortex-mediated maintenance of task sets,
+reducing both accuracy and consistency.
+
+5. Evidence
+Mean accuracy fell from 89.2% (SD 4.1) at baseline to 76.5% (SD 6.2) after restriction (paired t(31) =
+3.41, p = 0.003). Reaction-time variability (CV) rose by 22% (p = 0.011). Effect sizes were medium
+(Cohen's d = 0.62 for accuracy).
+
+6. Limitations
+Small sample, single university subject pool, no objective polysomnography, recovery follow-up was
+limited to 24 hours. Generalisation to clinical sleep disorders is not warranted.
+
+7. Implications
+Mild chronic sleep restriction measurably impairs working memory in healthy adults at effect sizes
+relevant for safety-critical work. Replication with polysomnography is needed.
+
+Funding and Conflicts
+Funded by an internal university research award. The authors declare no conflicts of interest.
+Data and analysis scripts are available at https://example.org/osf/abc123.
