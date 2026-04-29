@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, Request
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.db import get_db
@@ -69,6 +69,33 @@ async def import_paper_upload(
     db.commit()
     db.refresh(paper)
     return paper
+
+
+@router.post("/paste")
+async def import_paper_paste(
+    title: str = Form("Untitled"),
+    authors: str = Form(""),
+    year: int = Form(None),
+    text: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    """Import a paper by pasting text directly."""
+    if not text.strip():
+        raise HTTPException(status_code=400, detail="No text provided")
+
+    paper = Paper(
+        title=title or "Pasted Paper",
+        authors=authors,
+        year=year,
+        full_text=text.strip(),
+        source_path="paste",
+    )
+    db.add(paper)
+    db.flush()
+    _persist_sections(db, paper, text.strip())
+    db.commit()
+    db.refresh(paper)
+    return RedirectResponse(f"/papers/{paper.id}/view", status_code=303)
 
 
 @router.get("/{paper_id}", response_model=PaperOut)
