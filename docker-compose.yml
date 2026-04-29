@@ -1,0 +1,47 @@
+# ── Treaties: App + PostgreSQL ──
+# Ollama runs separately (local install or another machine).
+# Set OLLAMA_BASE_URL in .env to point to your Ollama instance.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: treaties-db
+    environment:
+      POSTGRES_USER: treaties
+      POSTGRES_PASSWORD: treaties
+      POSTGRES_DB: treaties
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U treaties -d treaties"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: treaties-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://treaties:treaties@postgres:5432/treaties
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.1:8b-instruct-q4_K_M}
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-180}
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      SNAPSHOT_DIR: /app/snapshots
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./snapshots:/app/snapshots
+    # If Ollama is on the Docker host (Windows/Mac), host.docker.internal works.
+    # If Ollama is on a different machine, set OLLAMA_BASE_URL in .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  pgdata:
